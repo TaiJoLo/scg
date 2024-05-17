@@ -29,6 +29,14 @@ def getCursor():
 def home():
     return render_template("base.html")
 
+@app.route("/sites")
+def listsites():
+    connection = getCursor()
+    connection.execute("SELECT * FROM sites;")
+    sitelist = connection.fetchall()
+    print(sitelist)
+    return render_template("sitelist.html", sitelist = sitelist)  
+
 @app.route("/campers", methods=['GET','POST'])
 def campers():
     if request.method == "GET":
@@ -36,8 +44,9 @@ def campers():
     else:
         campDate = request.form.get('campdate')
         connection = getCursor()
-        connection.execute("SELECT * FROM bookings join sites on site = site_id inner join customers on customer = customer_id where booking_date= %s;",(campDate,))
+        connection.execute("SELECT bookings.booking_id,bookings.booking_date,sites.site_id,sites.occupancy ,customers.firstname,customers.familyname,customers.email, customers.phone FROM bookings join sites on site = site_id inner join customers on customer = customer_id where booking_date= %s;",(campDate,))
         camperList = connection.fetchall()
+        print(camperList)
         return render_template("datepickercamper.html", camperlist = camperList)
 
 @app.route("/booking", methods=['GET','POST'])
