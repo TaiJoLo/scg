@@ -99,4 +99,27 @@ def makebooking():
 def success():
     return "Booking successfully added!"
 
+# Route for searching customers
+@app.route("/search_customer", methods=['GET', 'POST'])
+def search_customer():
+    # If the request method is GET, render the search form
+    if request.method == "GET":
+        return render_template("search_customer.html")
+    else:
+        # Extract the search term from the form
+        search_term = request.form.get('search_term')
 
+        # Establish database connection
+        connection = getCursor()
+
+        # Perform a SQL query to search for customers with partial matches
+        query = """
+            SELECT * FROM customers
+            WHERE firstname LIKE %s OR familyname LIKE %s
+        """
+        # Use wildcards to match any part of the name
+        connection.execute(query, (f"%{search_term}%", f"%{search_term}%"))
+        customer_list = connection.fetchall()
+
+        # Render the results on the same page
+        return render_template("search_result.html", customer_list=customer_list, search_term=search_term)
