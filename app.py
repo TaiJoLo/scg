@@ -65,9 +65,38 @@ def booking():
         customerList = connection.fetchall()
         connection.execute("select * from sites where occupancy >= %s AND site_id not in (select site from bookings where booking_date between %s AND %s);",(occupancy,firstNight,lastNight))
         siteList = connection.fetchall()
-        return render_template("bookingform.html", customerlist = customerList, bookingdate=bookingDate, sitelist = siteList, bookingnights = bookingNights)    
+        return render_template("bookingform.html", customerlist = customerList, bookingdate=bookingDate, sitelist = siteList, bookingnights = bookingNights, occupancy = occupancy)    
 
 @app.route("/booking/add", methods=['POST'])
 def makebooking():
-    print(request.form)
-    pass
+    # Extracting data from the form
+    customer_id = request.form.get('customer')
+    site_id = request.form.get('site')
+    bookingDate = request.form.get('bookingdate')
+    bookingNights = int(request.form.get('bookingnights'))
+    occupancy = int(request.form.get('occupancy'))
+
+    # Parsing the booking start date
+    start_date = date.fromisoformat(bookingDate)
+
+    # Establishing database connection
+    connection = getCursor() 
+
+    # Inserting booking data for each night of the booking
+    sql_query = """
+        INSERT INTO bookings (booking_date, customer, site,occupancy)
+        VALUES (%s, %s, %s, %s);
+    """
+    for night in range(bookingNights):
+        booking_night_date = start_date + timedelta(days=night)
+        connection.execute(sql_query, (booking_night_date, customer_id, site_id, occupancy))
+
+    # Redirecting to a success page
+    return redirect('/success')
+
+# Success route to confirm booking addition
+@app.route("/success")
+def success():
+    return "Booking successfully added!"
+
+
