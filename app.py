@@ -123,3 +123,22 @@ def search_customer():
 
         # Render the results on the same page
         return render_template("search_result.html", customer_list=customer_list, search_term=search_term)
+
+@app.route("/customeredit")
+def editborrower():
+    id = request.args.get("id")
+    connection = getCursor()
+    connection.execute("SELECT * FROM customers WHERE customer_id=%s;",(id,))
+    customer = connection.fetchone()
+    return render_template("customerform.html", customer = customer)
+
+@app.route("/customerupdate", methods=["POST"])
+def updateborrower():
+    id = request.form.get("id")
+    fname = request.form.get("customerfname")
+    sname = request.form.get("customersname")
+    email = request.form.get("customeremail")
+    phone = request.form.get("customerphone")
+    connection = getCursor()
+    connection.execute("UPDATE customers SET firstname=%s, familyname=%s, email=%s, phone=%s WHERE customer_id=%s;",(fname,sname,email,phone,id))
+    return redirect("/search_customer")

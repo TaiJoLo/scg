@@ -1,0 +1,82 @@
+{% extends "base.html" %} {% block content %} {% if customer %}
+<form action="/customerupdate" method="POST">
+  <input type="hidden" name="id" value="{{customer[0]}}" />
+  {% else %}
+  <form action="/customeradd" method="POST">
+    {% endif %}
+    <table class="table">
+      <tr>
+        <th scope="col">Customer ID</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Family Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone</th>
+        <th scope="col"></th>
+      </tr>
+
+      <tr>
+        <td>{{customer[0]}}</td>
+        <td>
+          <input
+            type="text"
+            name="customerfname"
+            {%
+            if
+            customer
+            %}
+            value="{{customer[1]}}"
+            {%
+            endif
+            %}
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            name="customersname"
+            {%
+            if
+            customer
+            %}
+            value="{{customer[2]}}"
+            {%
+            endif
+            %}
+          />
+        </td>
+        <td>
+          <input
+            type="email"
+            name="customeremail"
+            {%
+            if
+            customer
+            %}
+            value="{{customer[3]}}"
+            {%
+            endif
+            %}
+          />
+        </td>
+        <td>
+          <input
+            type="text"
+            name="customerphone"
+            {%
+            if
+            customer
+            %}
+            value="{{customer[4]}}"
+            {%
+            endif
+            %}
+          />
+        </td>
+
+        <td><input type="submit" /></td>
+      </tr>
+    </table>
+  </form>
+
+  {% endblock %}
+</form>

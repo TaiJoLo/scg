@@ -8,24 +8,28 @@
   <input type="submit" />
 </form>
 
-<table class="table">
-  <tr>
-    <th scope="col">Booking ID</th>
-    <th scope="col">Booking Date</th>
-    <th scope="col">Site</th>
-    <th scope="col">Occupany</th>
-    <th scope="col">First Name</th>
-    <th scope="col">Family Name</th>
-    <th scope="col">Email</th>
-    <th scope="col">Phone</th>
-  </tr>
-  {% for camper in camperlist %}
-  <tr>
-    {% for entry in camper %}
-    <td>{{entry}}</td>
+<table class="table table-hover">
+  <thead class="table-primary">
+    <tr>
+      <th scope="col">Booking ID</th>
+      <th scope="col">Booking Date</th>
+      <th scope="col">Site</th>
+      <th scope="col">Occupany</th>
+      <th scope="col">First Name</th>
+      <th scope="col">Family Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Phone</th>
+    </tr>
+  </thead>
+  <tdoby class="table-group-divider">
+    {% for camper in camperlist %}
+    <tr>
+      {% for entry in camper %}
+      <td>{{entry}}</td>
+      {% endfor %}
+    </tr>
     {% endfor %}
-  </tr>
-  {% endfor %}
+  </tdoby>
 </table>
 
 {% endblock %}
