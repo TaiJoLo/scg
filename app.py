@@ -115,10 +115,10 @@ def search_customer():
         # Perform a SQL query to search for customers with partial matches
         query = """
             SELECT * FROM customers
-            WHERE firstname LIKE %s OR familyname LIKE %s
+            WHERE customer_id LIKE %s OR firstname LIKE %s OR familyname LIKE %s OR email LIKE %s OR phone LIKE %s
         """
         # Use wildcards to match any part of the name
-        connection.execute(query, (f"%{search_term}%", f"%{search_term}%"))
+        connection.execute(query, (f"%{search_term}%",f"%{search_term}%", f"%{search_term}%",f"%{search_term}%",f"%{search_term}%"))
         customer_list = connection.fetchall()
 
         # Render the results on the same page
@@ -142,3 +142,28 @@ def updatecustomer():
     connection = getCursor()
     connection.execute("UPDATE customers SET firstname=%s, familyname=%s, email=%s, phone=%s WHERE customer_id=%s;",(fname,sname,email,phone,id))
     return redirect("/search_customer")
+
+@app.route("/customeradd", methods=["POST"])
+def addcustomer():
+    # Extract data from the form
+    fname = request.form.get("customerfname")
+    sname = request.form.get("customersname")
+    email = request.form.get("customeremail")
+    phone = request.form.get("customerphone")
+    
+    # Establishing database connection
+    connection = getCursor()
+    
+    # Insert new customer data into the database
+    sql_query = """
+        INSERT INTO customers (firstname, familyname, email, phone)
+        VALUES (%s, %s, %s, %s)
+    """
+    connection.execute(sql_query, (fname, sname, email, phone))
+
+    # Get the ID of the newly added customer
+    connection.execute("SELECT LAST_INSERT_ID()")
+    customer_id = connection.fetchone()[0]
+    
+    # Render the success page with a message
+    return render_template("success.html", message="Customer successfully added!", customer_id=customer_id,fname=fname,sname=sname,email=email,phone=phone)
