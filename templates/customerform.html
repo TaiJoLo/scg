@@ -28,6 +28,7 @@
             {%
             endif
             %}
+            required
           />
         </td>
         <td>
@@ -42,6 +43,7 @@
             {%
             endif
             %}
+            required
           />
         </td>
         <td>
@@ -56,11 +58,13 @@
             {%
             endif
             %}
+            size="25"
+            required
           />
         </td>
         <td>
           <input
-            type="text"
+            type="tel"
             name="customerphone"
             {%
             if
@@ -70,6 +74,7 @@
             {%
             endif
             %}
+            required
           />
         </td>
 
@@ -77,6 +82,9 @@
       </tr>
     </table>
   </form>
+
+  <!-- Link to go back to the search form -->
+  <p><a href="/search_customer">Back to Search</a></p>
 
   {% endblock %}
 </form>
