@@ -125,7 +125,7 @@ def search_customer():
         return render_template("search_result.html", customer_list=customer_list, search_term=search_term)
 
 @app.route("/customeredit")
-def editborrower():
+def editcustomer():
     id = request.args.get("id")
     connection = getCursor()
     connection.execute("SELECT * FROM customers WHERE customer_id=%s;",(id,))
@@ -133,7 +133,7 @@ def editborrower():
     return render_template("customerform.html", customer = customer)
 
 @app.route("/customerupdate", methods=["POST"])
-def updateborrower():
+def updatecustomer():
     id = request.form.get("id")
     fname = request.form.get("customerfname")
     sname = request.form.get("customersname")
