@@ -13,28 +13,54 @@
   </head>
 
   <body>
-    <nav>
-      <h1>Selwyn Campground</h1>
-      <ul>
-        <li><a href="{{ url_for('booking') }}">Make Booking</a></li>
-      </ul>
-      <ul>
-        <li><a href="{{ url_for('campers') }}">Camper List</a></li>
-      </ul>
-      <ul>
-        <li><a href="{{ url_for('search_customer') }}">Search Customer</a></li>
-      </ul>
-      <ul>
-        <li><a href="{{ url_for('editcustomer') }}">Add New Customer</a></li>
-      </ul>
-      <ul>
-        <li><a href="{{ url_for('report') }}">Customer Booking Report</a></li>
-      </ul>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand mb-0 h1" href="/">Selwyn Campground 🏕️</a>
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav nav-underline">
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.path == url_for('booking') %}active{% endif %}"
+                href="{{ url_for('booking') }}"
+                >Make Booking</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.path == url_for('campers') %}active{% endif %}"
+                href="{{ url_for('campers') }}"
+                >Camper List</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.path == url_for('search_customer') %}active{% endif %}"
+                href="{{ url_for('search_customer') }}"
+                >Search Customer</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.path == url_for('editcustomer') %}active{% endif %}"
+                href="{{ url_for('editcustomer') }}"
+                >Add New Customer</a
+              >
+            </li>
+            <li class="nav-item">
+              <a
+                class="nav-link {% if request.path == url_for('report') %}active{% endif %}"
+                href="{{ url_for('report') }}"
+                >Customer Booking Report</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
     </nav>
-    <section class="content">
+    <section class="content container mt-3">
       <header>{% block header %}{% endblock %}</header>
       {% for message in get_flashed_messages() %}
-      <div class="flash">{{ message }}</div>
+      <div class="alert alert-info">{{ message }}</div>
       {% endfor %} {% block content %}{% endblock %}
     </section>
     <!-- JavaScript Bundle with Popper -->
