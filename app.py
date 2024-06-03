@@ -171,3 +171,41 @@ def addcustomer():
     
     # Render the success page with a message
     return render_template("success.html", message="Customer successfully added!", customer_id=customer_id,fname=fname,sname=sname,email=email,phone=phone)
+
+@app.route("/report")
+def report():
+    sort_by = request.args.get('sort', 'name')  # Default sort by customer name
+    connection = getCursor()
+    
+    # Query to get total nights and average occupancy for each customer, sorted by the selected column
+    sql_query = f"""
+    SELECT 
+        c.customer_id, 
+        CONCAT(c.firstname, ' ', c.familyname) AS name,
+        COUNT(b.booking_date) AS total_nights,
+        AVG(b.occupancy) AS average_occupancy
+    FROM 
+        customers c
+    LEFT JOIN 
+        bookings b ON c.customer_id = b.customer
+    GROUP BY 
+        c.customer_id, c.firstname, c.familyname
+    ORDER BY 
+        {sort_by} DESC;
+    """
+    connection.execute(sql_query)
+    report_data = connection.fetchall()
+    
+    # Transform data into a list of dictionaries
+    customers = [
+        {
+            "name": row[1],
+            "total_nights": row[2],
+            "average_occupancy": round(row[3], 2) if row[3] is not None else 0
+        }
+        for row in report_data
+    ]
+    
+    return render_template("report.html", customers=customers)
+
+

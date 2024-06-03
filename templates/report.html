@@ -1,0 +1,24 @@
+{% extends "base.html" %} {% block title %}Customer Booking Report{% endblock %}
+{% block content %}
+<div class="container">
+  <h1>Customer Booking Report</h1>
+  <table class="table table-hover">
+    <thead class="thead-light">
+      <tr>
+        <th><a href="?sort=name">Customer Name</a></th>
+        <th><a href="?sort=total_nights">Total Nights Booked</a></th>
+        <th><a href="?sort=average_occupancy">Average Occupancy</a></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for customer in customers %}
+      <tr>
+        <td>{{ customer.name }}</td>
+        <td>{{ customer.total_nights }}</td>
+        <td>{{ customer.average_occupancy }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
