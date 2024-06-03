@@ -2,6 +2,7 @@
 
 <h1>{{ message }}</h1>
 <table class="table table-hover">
+  {% if phone %}
   <thead class="table-primary">
     <tr>
       <th scope="col">Customer ID</th>
@@ -20,5 +21,29 @@
       <td>{{phone}}</td>
     </tr>
   </tdoby>
+  {% elif site_id and booking_date %}
+  <thead class="table-primary">
+    <tr>
+      <th scope="col">Customer ID</th>
+      <th scope="col">First Name</th>
+      <th scope="col">Family Name</th>
+      <th scope="col">Site ID</th>
+      <th scope="col">Booking Date</th>
+      <th scope="col">Booking Nights</th>
+      <th scope="col">Occupancy</th>
+    </tr>
+  </thead>
+  <tdoby class="table-group-divider">
+    <tr>
+      <td>{{customer_id}}</td>
+      <td>{{fname}}</td>
+      <td>{{sname}}</td>
+      <td>{{site_id}}</td>
+      <td>{{booking_date}}</td>
+      <td>{{booking_nights}}</td>
+      <td>{{occupancy}}</td>
+    </tr>
+  </tdoby>
+  {% endif %}
 </table>
 {% endblock %}

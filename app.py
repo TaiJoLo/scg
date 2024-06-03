@@ -91,13 +91,15 @@ def makebooking():
         booking_night_date = start_date + timedelta(days=night)
         connection.execute(sql_query, (booking_night_date, customer_id, site_id, occupancy))
 
-    # Redirecting to a success page
-    return redirect('/success')
+    # Fetching the customer's first name and family name
+    connection.execute("SELECT firstname, familyname FROM customers WHERE customer_id = %s", (customer_id,))
+    customer = connection.fetchone()
+    fname = customer[0]
+    sname = customer[1]
 
-# Success route to confirm booking addition
-@app.route("/success")
-def success():
-    return "Booking successfully added!"
+    # Redirecting to a success page
+    return render_template('success.html', message='Booking successfully added!', customer_id=customer_id, fname=fname, sname=sname, site_id=site_id, booking_date=bookingDate, booking_nights=bookingNights, occupancy=occupancy)
+
 
 # Route for searching customers
 @app.route("/search_customer", methods=['GET', 'POST'])
@@ -141,7 +143,9 @@ def updatecustomer():
     phone = request.form.get("customerphone")
     connection = getCursor()
     connection.execute("UPDATE customers SET firstname=%s, familyname=%s, email=%s, phone=%s WHERE customer_id=%s;",(fname,sname,email,phone,id))
-    return redirect("/search_customer")
+    
+    # Render the success page with a message
+    return render_template("success.html", message="Customer successfully updated!", customer_id=id,fname=fname,sname=sname,email=email,phone=phone)
 
 @app.route("/customeradd", methods=["POST"])
 def addcustomer():
