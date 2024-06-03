@@ -5,15 +5,16 @@
   <form action="/customeradd" method="POST">
     {% endif %}
     <table class="table">
-      <tr>
-        <th scope="col">Customer ID</th>
-        <th scope="col">First Name</th>
-        <th scope="col">Family Name</th>
-        <th scope="col">Email</th>
-        <th scope="col">Phone</th>
-        <th scope="col"></th>
-      </tr>
-
+      <thead class="table-primary">
+        <tr>
+          <th scope="col">Customer ID</th>
+          <th scope="col">First Name</th>
+          <th scope="col">Family Name</th>
+          <th scope="col">Email</th>
+          <th scope="col">Phone</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
       <tr>
         <td>
           {% if customer %} {{ customer[0] }} {% else %} NEW CUSTOMER {% endif
@@ -32,6 +33,10 @@
             endif
             %}
             required
+            pattern="[A-Za-z]+"
+            minlength="2"
+            maxlength="45"
+            title="Please enter a valid first name with at least 2 alphabetic characters"
           />
         </td>
         <td>
@@ -47,6 +52,10 @@
             endif
             %}
             required
+            pattern="[A-Za-z]+"
+            minlength="2"
+            maxlength="60"
+            title="Please enter a valid first name with at least 2 alphabetic characters"
           />
         </td>
         <td>
@@ -78,6 +87,8 @@
             endif
             %}
             required
+            pattern="\+?[0-9]{1,12}"
+            title="Please enter a valid phone number with an optional leading '+' sign, digits only, and a maximum length of 12 characters"
           />
         </td>
 
@@ -85,9 +96,6 @@
       </tr>
     </table>
   </form>
-
-  <!-- Link to go back to the search form -->
-  <p><a href="/search_customer">Back to Search</a></p>
 
   {% endblock %}
 </form>
