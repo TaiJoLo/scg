@@ -7,7 +7,6 @@
     <table class="table">
       <thead class="table-primary">
         <tr>
-          <th scope="col">Customer ID</th>
           <th scope="col">First Name</th>
           <th scope="col">Family Name</th>
           <th scope="col">Email</th>
@@ -16,10 +15,6 @@
         </tr>
       </thead>
       <tr>
-        <td>
-          {% if customer %} {{ customer[0] }} {% else %} NEW CUSTOMER {% endif
-          %}
-        </td>
         <td>
           <input
             type="text"
