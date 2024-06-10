@@ -158,10 +158,10 @@ def search_customer():
         """
         # Use wildcards to match any part of the name
         connection.execute(sql_query, (f"%{search_term}%",f"%{search_term}%", f"%{search_term}%",f"%{search_term}%",f"%{search_term}%"))
-        customer_list = connection.fetchall()
+        customerList = connection.fetchall()
 
         # Render the results on the same page
-        return render_template("search_result.html", customer_list=customer_list, search_term=search_term)
+        return render_template("search_result.html", customerlist=customerList, search_term=search_term)
 
 @app.route("/customeredit")
 def editcustomer():
@@ -208,7 +208,7 @@ def addcustomer():
         INSERT INTO customers (firstname, familyname, email, phone)
         VALUES (%s, %s, %s, %s)
     """
-    connection.execute(sql_query, (fname, sname, email, phone))
+    connection.execute(sql_query1, (fname, sname, email, phone))
 
     # Get the ID of the newly added customer
     sql_query2 = """
@@ -219,6 +219,48 @@ def addcustomer():
     
     # Render the success page with a message
     return render_template("success.html", message="Customer successfully added!", customer_id=customer_id,fname=fname,sname=sname,email=email,phone=phone)
+
+
+@app.route("/customerlist")
+def customerlist():
+    connection = getCursor()
+    sql_query = """
+        SELECT customer_id, firstname, familyname, email, phone 
+        FROM customers
+    """
+    connection.execute(sql_query)
+    customerList = connection.fetchall()
+    return render_template("search_result.html", customerlist=customerList)
+
+@app.route("/customersummary")
+def customersummary():
+    customer_id = request.args.get("id")
+    connection = getCursor()
+
+    query = """
+        SELECT 
+            c.customer_id, 
+            CONCAT(c.firstname, ' ', c.familyname) AS name,
+            COUNT(b.booking_date) AS total_nights,
+            AVG(b.occupancy) AS average_occupancy
+        FROM 
+            customers c
+        LEFT JOIN 
+            bookings b ON c.customer_id = b.customer
+        WHERE 
+            c.customer_id = %s
+        GROUP BY 
+            c.customer_id, c.firstname, c.familyname
+    """
+    connection.execute(query, (customer_id,))
+    customer_summary = connection.fetchone()
+
+    return render_template("customer_summary.html", customer_summary=customer_summary)
+
+
+
+
+
 
 @app.route("/report")
 def report():

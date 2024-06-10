@@ -1,24 +1,33 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} {% block content %} {% if search_term %}
 <h2>Search Results for "{{ search_term }}":</h2>
+{% endif %}
 
 <!-- Display search results if available -->
-{% if customer_list %}
+{% if customerlist %}
 <table class="table">
   <tr>
     <th scope="col">Customer ID</th>
     <th scope="col">Name</th>
     <th scope="col">Email</th>
     <th scope="col">Phone</th>
+    {% if search_term %}
     <th scope="col">Edit</th>
+    {% else %}
+    <th scope="col">Report</th>
+    {% endif %}
   </tr>
 
-  {% for customer in customer_list %}
+  {% for customer in customerlist %}
   <tr>
     <td>{{customer[0]}}</td>
     <td>{{customer[1]}} {{customer[2]}}</td>
     <td>{{customer[3]}}</td>
     <td>{{customer[4]}}</td>
+    {% if search_term %}
     <td><a href="customeredit?id={{customer[0]}}">Edit</a></td>
+    {% else %}
+    <td><a href="customersummary?id={{customer[0]}}">Report</a></td>
+    {% endif %}
   </tr>
   {% endfor %}
 </table>
