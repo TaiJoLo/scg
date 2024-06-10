@@ -34,7 +34,10 @@ def home():
 @app.route("/sites")
 def listsites():
     connection = getCursor()
-    connection.execute("SELECT * FROM sites;")
+    sql_query =""" 
+        SELECT * FROM sites;
+    """
+    connection.execute(sql_query)
     sitelist = connection.fetchall()
     print(sitelist)
     return render_template("sitelist.html", sitelist = sitelist)  
@@ -46,7 +49,14 @@ def campers():
     else:
         campDate = request.form.get('campdate')
         connection = getCursor()
-        connection.execute("SELECT bookings.booking_id,bookings.booking_date,sites.site_id,sites.occupancy ,customers.firstname,customers.familyname,customers.email, customers.phone FROM bookings join sites on site = site_id inner join customers on customer = customer_id where booking_date= %s;",(campDate,))
+        sql_query ="""
+            SELECT bookings.booking_id, bookings.booking_date, sites.site_id, bookings.occupancy, customers.firstname, customers.familyname, customers.email, customers.phone 
+            FROM bookings 
+            JOIN sites on site = site_id 
+            INNER JOIN customers on customer = customer_id 
+            WHERE booking_date= %s;
+        """
+        connection.execute(sql_query,(campDate,))
         camperList = connection.fetchall()
         print(camperList)
         return render_template("camperlist.html", camperlist = camperList)
@@ -72,15 +82,20 @@ def booking():
 
         lastNight = firstNight + timedelta(days=int(bookingNights))
         connection = getCursor()
-        connection.execute("SELECT * FROM customers;")
+        sql_query1 = """ 
+            SELECT * FROM customers;
+        """
+        connection.execute(sql_query1)
         customerList = connection.fetchall()
-        connection.execute("""SELECT * FROM sites 
-                              WHERE occupancy >= %s 
-                              AND site_id NOT IN 
-                                  (SELECT site 
-                                   FROM bookings 
-                                   WHERE booking_date BETWEEN %s AND %s);""",
-                           (occupancy, firstNight, lastNight))
+        sql_query2 = """
+            SELECT * FROM sites 
+            WHERE occupancy >= %s 
+            AND site_id NOT IN 
+            (SELECT site 
+            FROM bookings 
+            WHERE booking_date BETWEEN %s AND %s);
+        """
+        connection.execute(sql_query2,(occupancy, firstNight, lastNight))
         siteList = connection.fetchall()
         return render_template("bookingform.html", customerlist=customerList, bookingdate=bookingDate, sitelist=siteList, bookingnights=bookingNights, occupancy=occupancy)
 
@@ -101,15 +116,21 @@ def makebooking():
 
     connection = getCursor()
 
-    sql_query = """
+    sql_query1 = """
         INSERT INTO bookings (booking_date, customer, site, occupancy)
         VALUES (%s, %s, %s, %s);
     """
     for night in range(bookingNights):
         booking_night_date = start_date + timedelta(days=night)
-        connection.execute(sql_query, (booking_night_date, customer_id, site_id, occupancy))
+        connection.execute(sql_query1, (booking_night_date, customer_id, site_id, occupancy))
 
-    connection.execute("SELECT firstname, familyname FROM customers WHERE customer_id = %s", (customer_id,))
+    sql_query2 = """
+        SELECT firstname, familyname 
+        FROM customers 
+        WHERE customer_id = %s
+
+    """
+    connection.execute(sql_query2, (customer_id,))
     customer = connection.fetchone()
     fname = customer[0]
     sname = customer[1]
@@ -131,12 +152,12 @@ def search_customer():
         connection = getCursor()
 
         # Perform a SQL query to search for customers with partial matches
-        query = """
+        sql_query = """
             SELECT * FROM customers
             WHERE customer_id LIKE %s OR firstname LIKE %s OR familyname LIKE %s OR email LIKE %s OR phone LIKE %s
         """
         # Use wildcards to match any part of the name
-        connection.execute(query, (f"%{search_term}%",f"%{search_term}%", f"%{search_term}%",f"%{search_term}%",f"%{search_term}%"))
+        connection.execute(sql_query, (f"%{search_term}%",f"%{search_term}%", f"%{search_term}%",f"%{search_term}%",f"%{search_term}%"))
         customer_list = connection.fetchall()
 
         # Render the results on the same page
@@ -146,7 +167,10 @@ def search_customer():
 def editcustomer():
     id = request.args.get("id")
     connection = getCursor()
-    connection.execute("SELECT * FROM customers WHERE customer_id=%s;",(id,))
+    sql_query = """
+        SELECT * FROM customers WHERE customer_id=%s;
+    """
+    connection.execute(sql_query,(id,))
     customer = connection.fetchone()
     return render_template("customerform.html", customer = customer)
 
@@ -158,7 +182,12 @@ def updatecustomer():
     email = request.form.get("customeremail")
     phone = request.form.get("customerphone")
     connection = getCursor()
-    connection.execute("UPDATE customers SET firstname=%s, familyname=%s, email=%s, phone=%s WHERE customer_id=%s;",(fname,sname,email,phone,id))
+    sql_query = """
+        UPDATE customers 
+        SET firstname=%s, familyname=%s, email=%s, phone=%s 
+        WHERE customer_id=%s
+    """
+    connection.execute(sql_query,(fname,sname,email,phone,id))
     
     # Render the success page with a message
     return render_template("success.html", message="Customer successfully updated!", customer_id=id,fname=fname,sname=sname,email=email,phone=phone)
@@ -175,14 +204,17 @@ def addcustomer():
     connection = getCursor()
     
     # Insert new customer data into the database
-    sql_query = """
+    sql_query1 = """
         INSERT INTO customers (firstname, familyname, email, phone)
         VALUES (%s, %s, %s, %s)
     """
     connection.execute(sql_query, (fname, sname, email, phone))
 
     # Get the ID of the newly added customer
-    connection.execute("SELECT LAST_INSERT_ID()")
+    sql_query2 = """
+        SELECT LAST_INSERT_ID()
+    """
+    connection.execute(sql_query2)
     customer_id = connection.fetchone()[0]
     
     # Render the success page with a message
