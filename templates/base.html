@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <title>{% block title %}{% endblock %}</title>
@@ -12,57 +12,73 @@
     />
   </head>
 
-  <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <body class="d-flex flex-column min-vh-100">
+    <nav
+      class="navbar sticky-top bg-dark flex-md-nowrap p-0 shadow"
+      style="height: 60px"
+    >
       <div class="container-fluid">
-        <a class="navbar-brand mb-0 h1" href="/">Selwyn Campground 🏕️</a>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav nav-underline">
-            <li class="nav-item">
-              <a
-                class="nav-link {% if request.path == url_for('booking') %}active{% endif %}"
-                href="{{ url_for('booking') }}"
-                >Make Booking</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link {% if request.path == url_for('campers') %}active{% endif %}"
-                href="{{ url_for('campers') }}"
-                >Camper List</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link {% if request.path == url_for('search_customer') %}active{% endif %}"
-                href="{{ url_for('search_customer') }}"
-                >Search Customer</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link {% if request.path == url_for('editcustomer') %}active{% endif %}"
-                href="{{ url_for('editcustomer') }}"
-                >Add New Customer</a
-              >
-            </li>
-            <li class="nav-item">
-              <a
-                class="nav-link {% if request.path == url_for('customerlist') %}active{% endif %}"
-                href="{{ url_for('customerlist') }}"
-                >Customer Summary Report</a
-              >
-            </li>
-          </ul>
-        </div>
+        <a
+          class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6 text-white"
+          href="/"
+          >Selwyn Campground 🏕️</a
+        >
       </div>
     </nav>
-    <section class="content container mt-3">
-      <header>{% block header %}{% endblock %}</header>
-      {% for message in get_flashed_messages() %}
-      <div class="alert alert-info">{{ message }}</div>
-      {% endfor %} {% block content %}{% endblock %}
-    </section>
+    <div class="container-fluid flex-grow-1 d-flex">
+      <div class="bg-body-tertiary border-end col-md-3 col-lg-2 p-0">
+        <div class="d-flex flex-column p-0 pt-lg-3 overflow-y-auto h-100">
+          <div class="offcanvas-body flex-grow-1 d-flex flex-column">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a
+                  class="nav-link d-flex align-items-center gap-2 {% if request.path == url_for('booking') %}active{% endif %}"
+                  aria-current="page"
+                  href="{{ url_for('booking') }}"
+                  >Booking</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link d-flex align-items-center gap-2 {% if request.path == url_for('campers') %}active{% endif %}"
+                  href="{{ url_for('campers') }}"
+                  >Camper List</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link d-flex align-items-center gap-2 {% if request.path == url_for('search_customer') %}active{% endif %}"
+                  href="{{ url_for('search_customer') }}"
+                  >Search Customer</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link d-flex align-items-center gap-2 {% if request.path == url_for('editcustomer') %}active{% endif %}"
+                  href="{{ url_for('editcustomer') }}"
+                  >Add Customer</a
+                >
+              </li>
+              <li class="nav-item">
+                <a
+                  class="nav-link d-flex align-items-center gap-2 {% if request.path == url_for('customerlist') %}active{% endif %}"
+                  href="{{ url_for('customerlist') }}"
+                  >Summary Report</a
+                >
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 d-flex flex-column">
+        <div
+          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
+        >
+          <header>{% block header %}{% endblock %}</header>
+        </div>
+        <div class="flex-grow-1">{% block content %}{% endblock %}</div>
+      </main>
+    </div>
     <!-- JavaScript Bundle with Popper -->
     <script>
       // Example starter JavaScript for disabling form submissions if there are invalid fields

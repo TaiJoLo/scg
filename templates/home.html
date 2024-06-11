@@ -1,0 +1,24 @@
+<!-- templates/home.html -->
+{% extends "base.html" %} {% block title %} Home {% endblock %} {% block header
+%}
+<h1 class="display-4 text-center mt-4">
+  Welcome to Selwyn Campground Staff Portal
+</h1>
+{% endblock %} {% block content %}
+<div class="container mt-4">
+  <div class="bg-light p-5 rounded shadow-sm">
+    <h2 class="display-5 fw-bold">Manage Bookings and Customers Efficiently</h2>
+    <p class="lead">
+      Access all the tools you need to provide the best service to our campers.
+    </p>
+    <hr class="my-4" />
+
+    <a
+      class="btn btn-primary btn-lg mt-3"
+      href="{{ url_for('booking') }}"
+      role="button"
+      >Get Started</a
+    >
+  </div>
+</div>
+{% endblock %}
