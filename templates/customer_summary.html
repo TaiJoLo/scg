@@ -1,19 +1,34 @@
 {% extends "base.html" %} {% block content %}
-<h2>Customer Report</h2>
-
-{% if customer_summary %}
-<table class="table">
-  <tr>
-    <th scope="col">Name</th>
-    <th scope="col">Total Nights</th>
-    <th scope="col">Average Occupancy</th>
-  </tr>
-  <tr>
-    <td>{{ customer_summary[1] }}</td>
-    <td>{{ customer_summary[2] }}</td>
-    <td>{{ customer_summary[3] }}</td>
-  </tr>
-</table>
-{% else %}
-<p>No details available for this customer.</p>
-{% endif %} {% endblock %}
+<div class="container mt-4">
+  <h3 class="mb-3">Customer Report</h3>
+  <div class="card shadow-sm">
+    <div class="card-body">
+      {% if customer_summary %}
+      <div class="table-responsive">
+        <table class="table">
+          <thead class="thead-light">
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Total Nights</th>
+              <th scope="col">Average Occupancy</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{ customer_summary[1] }}</td>
+              <td>{{ customer_summary[2] }}</td>
+              <td>{{ customer_summary[3] }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      {% else %}
+      <div class="alert alert-warning mt-4" role="alert">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        No details available for this customer.
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

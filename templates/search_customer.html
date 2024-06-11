@@ -1,10 +1,27 @@
 {% extends "base.html" %} {% block content %}
-<h3>Search for Customers</h3>
+<div class="container">
+  <h3>Search for Customers</h3>
 
-<!-- Form to submit a search query -->
-<form method="POST" action="/search_customer">
-  <label for="search_term">Enter customer id, name, phone, or email:</label>
-  <input type="text" id="search_term" name="search_term" required />
-  <input type="submit" value="Search" />
-</form>
+  <!-- Form to submit a search query -->
+  <form method="POST" action="/search_customer">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <div class="form-floating mb-4">
+          <input
+            type="text"
+            id="search_term"
+            name="search_term"
+            class="form-control"
+            placeholder="Enter Customer ID, Name, Phone, or Email"
+            required
+          />
+          <label for="search_term"
+            >Enter Customer ID, Name, Phone, or Email</label
+          >
+        </div>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary">Search</button>
+  </form>
+</div>
 {% endblock %}

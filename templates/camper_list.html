@@ -1,0 +1,30 @@
+{% extends "base.html" %} {% block content %}
+<div class="container mt-2">
+  <h3 class="mb-3">Campers on Date: {{ campDate }}</h3>
+
+  <!-- Insert code to loop over the list of campers and display them -->
+  <table class="table table-hover">
+    <thead class="table-primary">
+      <tr>
+        <th scope="col">Booking ID</th>
+        <th scope="col">Booking Date</th>
+        <th scope="col">Site</th>
+        <th scope="col">Occupancy</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Family Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for camper in camper_list %}
+      <tr>
+        {% for entry in camper %}
+        <td>{{ entry }}</td>
+        {% endfor %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

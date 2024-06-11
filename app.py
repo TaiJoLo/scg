@@ -45,7 +45,7 @@ def listsites():
 @app.route("/campers", methods=['GET', 'POST'])
 def campers():
     if request.method == "GET":
-        return render_template("datepickercamper.html", currentdate=datetime.now().date())
+        return render_template("datepicker_camper.html", currentdate=datetime.now().date())
     else:
         campDate = request.form.get('campdate')
         connection = getCursor()
@@ -57,8 +57,8 @@ def campers():
             WHERE booking_date = %s;
         """
         connection.execute(sql_query, (campDate,))
-        camperList = connection.fetchall()
-        return render_template("camperlist.html", camperlist=camperList)
+        camper_list = connection.fetchall()
+        return render_template("camper_list.html", campDate=campDate, camper_list=camper_list)
 
 @app.route("/booking", methods=['GET', 'POST'])
 def booking():
@@ -96,7 +96,7 @@ def booking():
         """
         connection.execute(sql_query2, (occupancy, firstNight, lastNight))
         siteList = connection.fetchall()
-        return render_template("bookingform.html", customerlist=customerList, bookingdate=bookingDate, sitelist=siteList, bookingnights=bookingNights, occupancy=occupancy)
+        return render_template("booking_form.html", customerlist=customerList, bookingdate=bookingDate, sitelist=siteList, bookingnights=bookingNights, occupancy=occupancy)
 
 @app.route("/booking/add", methods=['POST'])
 def makebooking():
@@ -149,7 +149,7 @@ def search_customer():
         connection.execute(sql_query, (f"%{search_term}%", f"%{search_term}%", f"%{search_term}%", f"%{search_term}%", f"%{search_term}%"))
         customerList = connection.fetchall()
 
-        return render_template("search_result.html", customerlist=customerList, search_term=search_term)
+        return render_template("search_result.html", customerlist=customerList, search_term=search_term, route='search_customer')
 
 @app.route("/customeredit")
 def editcustomer():
@@ -160,7 +160,7 @@ def editcustomer():
     """
     connection.execute(sql_query, (id,))
     customer = connection.fetchone()
-    return render_template("customerform.html", customer=customer)
+    return render_template("customer_form.html", customer=customer)
 
 @app.route("/customerupdate", methods=["POST"])
 def updatecustomer():
@@ -201,19 +201,47 @@ def addcustomer():
     
     return render_template("success.html", message="Customer successfully added!", customer_id=customer_id, fname=fname, sname=sname, email=email, phone=phone)
 
-@app.route("/customerlist")
-def customerlist():
+@app.route("/customerlistsummary")
+def customerlistforsummary():
     connection = getCursor()
-    sql_query = """
+    sort_by = request.args.get('sort', 'name')
+    sort_column = {
+        'name': 'firstname, familyname',
+        'email': 'email',
+        'phone': 'phone'
+    }.get(sort_by, 'firstname, familyname')  # Default sorting by name if the parameter is invalid
+
+    sql_query = f"""
         SELECT customer_id, firstname, familyname, email, phone 
         FROM customers
+        ORDER BY {sort_column}
     """
     connection.execute(sql_query)
     customerList = connection.fetchall()
-    return render_template("search_result.html", customerlist=customerList)
+    return render_template("search_result.html", customerlist=customerList, sort_by=sort_by, route='customerlistforsummary')
+
+@app.route("/customerlistedit")
+def customerlistforedit():
+    connection = getCursor()
+    sort_by = request.args.get('sort', 'name')
+    sort_column = {
+        'name': 'firstname, familyname',
+        'email': 'email',
+        'phone': 'phone'
+    }.get(sort_by, 'firstname, familyname')  # Default sorting by name if the parameter is invalid
+
+    sql_query = f"""
+        SELECT customer_id, firstname, familyname, email, phone 
+        FROM customers
+        ORDER BY {sort_column}
+    """
+    connection.execute(sql_query)
+    customerList = connection.fetchall()
+    return render_template("search_result.html", customerlist=customerList, sort_by=sort_by, route='customerlistforedit')
+
 
 @app.route("/customersummary")
-def customersummary():
+def customer_summary():
     customer_id = request.args.get("id")
     connection = getCursor()
 

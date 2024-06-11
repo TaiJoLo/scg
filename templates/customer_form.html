@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container ">
+  {% if customer %}
+ 
+  <form action="/customerupdate" method="POST">
+    <input type="hidden" name="id" value="{{customer[0]}}" />
+  {% else %}
+  <form action="/customeradd" method="POST">
+  {% endif %}
+  <h3 class="mb-3">{% if customer %}Update Customer{% else %}Add Customer{% endif %}</h3>
+   
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="thead-light">
+              <tr>
+                <th scope="col">First Name</th>
+                <th scope="col">Family Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Phone</th>
+                <th scope="col"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <input
+                    type="text"
+                    name="customerfname"
+                    class="form-control"
+                    {% if customer %}value="{{customer[1]}}"{% endif %}
+                    required
+                    pattern="[A-Za-z]+"
+                    minlength="2"
+                    maxlength="45"
+                    title="Please enter a valid first name with at least 2 alphabetic characters"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    name="customersname"
+                    class="form-control"
+                    {% if customer %}value="{{customer[2]}}"{% endif %}
+                    required
+                    pattern="[A-Za-z]+"
+                    minlength="2"
+                    maxlength="60"
+                    title="Please enter a valid family name with at least 2 alphabetic characters"
+                  />
+                </td>
+                <td>
+                  <input
+                    type="email"
+                    name="customeremail"
+                    class="form-control"
+                    {% if customer %}value="{{customer[3]}}"{% endif %}
+                    size="25"
+                    required
+                  />
+                </td>
+                <td>
+                  <input
+                    type="tel"
+                    name="customerphone"
+                    class="form-control"
+                    {% if customer %}value="{{customer[4]}}"{% endif %}
+                    required
+                    pattern="\+?[0-9]{1,12}"
+                    title="Please enter a valid phone number with an optional leading '+' sign, digits only, and a maximum length of 12 characters"
+                  />
+                </td>
+                <td>
+                  <button type="submit" class="btn btn-primary">{% if customer %}Update{% else %}Add{% endif %}</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+{% endblock %}

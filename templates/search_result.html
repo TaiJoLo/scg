@@ -1,35 +1,90 @@
-{% extends "base.html" %} {% block content %} {% if search_term %}
-<h2>Search Results for "{{ search_term }}":</h2>
-{% endif %}
+{% extends "base.html" %} {% block content %}
+<div class="container">
+  {% if route == 'customerlistforsummary' %}
+  <h3>Customer Summary Report</h3>
+  {% elif route == 'search_customer' %}
+  <h3>Search Results for "{{ search_term }}":</h3>
+  {% else %}
+  <h3>Edit Customer</h3>
+  {% endif %}
 
-<!-- Display search results if available -->
-{% if customerlist %}
-<table class="table">
-  <tr>
-    <th scope="col">Name</th>
-    <th scope="col">Email</th>
-    <th scope="col">Phone</th>
-    {% if search_term %}
-    <th scope="col">Edit</th>
-    {% else %}
-    <th scope="col">Report</th>
-    {% endif %}
-  </tr>
-
-  {% for customer in customerlist %}
-  <tr>
-    <td>{{customer[1]}} {{customer[2]}}</td>
-    <td>{{customer[3]}}</td>
-    <td>{{customer[4]}}</td>
-    {% if search_term %}
-    <td><a href="customeredit?id={{customer[0]}}">Edit</a></td>
-    {% else %}
-    <td><a href="customersummary?id={{customer[0]}}">Report</a></td>
-    {% endif %}
-  </tr>
-  {% endfor %}
-</table>
-<!-- Display message if no results found -->
-{% elif search_term is not none %}
-<p>No customers found matching "{{ search_term }}"</p>
-{% endif %} {% endblock %}
+  <!-- Display search results if available -->
+  {% if customerlist %}
+  <div class="search-results mt-4">
+    <table class="table table-hover">
+      <thead class="table-primary">
+        <tr>
+          <th scope="col">
+            <a href="?sort=name" class="text-decoration-none text-dark"
+              >Name <i class="bi bi-arrow-down-short"></i>
+            </a>
+          </th>
+          <th scope="col">
+            <a href="?sort=email" class="text-decoration-none text-dark"
+              >Email <i class="bi bi-arrow-down-short"></i>
+            </a>
+          </th>
+          <th scope="col">
+            <a href="?sort=phone" class="text-decoration-none text-dark"
+              >Phone <i class="bi bi-arrow-down-short"></i>
+            </a>
+          </th>
+          {% if search_term %}
+          <th scope="col"></th>
+          <th scope="col"></th>
+          {% else %}
+          <th scope="col"></th>
+          {% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        {% for customer in customerlist %}
+        <tr>
+          <td>{{ customer[1] }} {{ customer[2] }}</td>
+          <td>{{ customer[3] }}</td>
+          <td>{{ customer[4] }}</td>
+          {% if route == 'customerlistforsummary' %}
+          <td>
+            <a
+              href="customersummary?id={{ customer[0] }}"
+              class="btn btn-sm btn-outline-success"
+              >View Summary</a
+            >
+          </td>
+          {% elif route == 'customerlistforedit' %}
+          <td>
+            <a
+              href="customeredit?id={{ customer[0] }}"
+              class="btn btn-sm btn-outline-primary"
+              >Edit</a
+            >
+          </td>
+          {% else %}
+          <td>
+            <a
+              href="customeredit?id={{ customer[0] }}"
+              class="btn btn-sm btn-outline-primary"
+              >Edit</a
+            >
+          </td>
+          <td>
+            <a
+              href="customersummary?id={{ customer[0] }}"
+              class="btn btn-sm btn-outline-success"
+              >View Summary</a
+            >
+          </td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% elif search_term is not none %}
+  <div class="alert alert-warning mt-4" role="alert">
+    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+    No customers found matching "{{ search_term }}"
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
