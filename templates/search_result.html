@@ -15,19 +15,25 @@
       <thead class="table-primary">
         <tr>
           <th scope="col">
+            {% if route == 'search_customer' %} Name {%else%}
             <a href="?sort=name" class="text-decoration-none text-dark"
               >Name <i class="bi bi-arrow-down-short"></i>
             </a>
+            {% endif %}
           </th>
           <th scope="col">
+            {% if route == 'search_customer' %} Email {%else%}
             <a href="?sort=email" class="text-decoration-none text-dark"
               >Email <i class="bi bi-arrow-down-short"></i>
             </a>
+            {% endif %}
           </th>
           <th scope="col">
+            {% if route == 'search_customer' %} Phone {%else%}
             <a href="?sort=phone" class="text-decoration-none text-dark"
               >Phone <i class="bi bi-arrow-down-short"></i>
             </a>
+            {% endif %}
           </th>
           {% if search_term %}
           <th scope="col"></th>

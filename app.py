@@ -146,6 +146,8 @@ def search_customer():
             SELECT * FROM customers
             WHERE customer_id LIKE %s OR firstname LIKE %s OR familyname LIKE %s OR email LIKE %s OR phone LIKE %s
         """
+
+        
         connection.execute(sql_query, (f"%{search_term}%", f"%{search_term}%", f"%{search_term}%", f"%{search_term}%", f"%{search_term}%"))
         customerList = connection.fetchall()
 
