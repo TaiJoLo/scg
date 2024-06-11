@@ -1,24 +1,59 @@
 {% extends "base.html" %} {% block content %}
-<!-- code in here to display a list of books-->
+<!-- code to display a list of books -->
 
-<h3>Choose the date you'd like the booking to start on.</h3>
+<div class="container">
+  <h3>Choose the start date for the booking:</h3>
 
-<form action="{{url_for('booking')}}" method="POST">
-  <label for="bookingdate">Choose start night of booking</label>
-  <input type="date" min="{{currentdate}}" name="bookingdate" />
-  <label for="bookingnights">Number of nights</label>
-  <input
-    type="number"
-    name="bookingnights"
-    min="1"
-    max="5"
-    step="1"
-    value="1"
-  />
-  <label for="occupancy">Number of people</label>
-  <input type="number" name="occupancy" min="1" max="8" step="1" value="1" />
+  <form
+    action="{{ url_for('booking') }}"
+    method="POST"
+    class="needs-validation"
+    novalidate
+  >
+    <div class="mt-4 form-row">
+      <div class="col-md-3 mb-3">
+        <label for="bookingdate">Start Date:</label>
+        <input
+          type="date"
+          min="{{ currentdate }}"
+          class="mt-2 form-control"
+          name="bookingdate"
+          required
+        />
+        <div class="invalid-feedback">Please choose a start date.</div>
+      </div>
 
-  <input type="submit" />
-</form>
+      <div class="col-md-3 mb-3">
+        <label for="bookingnights">Number of Nights:</label>
+        <input
+          type="number"
+          class="mt-2 form-control"
+          name="bookingnights"
+          min="1"
+          max="5"
+          step="1"
+          value="1"
+          required
+        />
+      </div>
+
+      <div class="col-md-3 mb-3">
+        <label for="occupancy">Number of People:</label>
+        <input
+          type="number"
+          class="mt-2 form-control"
+          name="occupancy"
+          min="1"
+          max="8"
+          step="1"
+          value="1"
+          required
+        />
+      </div>
+    </div>
+
+    <button type="submit" class="mt-4 btn btn-primary">Submit</button>
+  </form>
+</div>
 
 {% endblock %}

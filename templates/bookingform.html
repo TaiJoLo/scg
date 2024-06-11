@@ -1,28 +1,44 @@
 {% extends "base.html" %}
 {% block content %}
-<!-- code in here to display a list of books-->
-<h2>Selwyn Campground - Make a booking</h2>
-<p>
-<form action="/booking/add" method="POST">
-<label for="bookingdate">Start Date to be booked</label>
-<input type="text" enabled="false" name="bookingdate" value="{{bookingdate}}"/>
-<br>
-<input type="hidden" name="bookingnights" value="{{bookingnights}}"/>
-<input type="hidden" name="occupancy" value="{{occupancy}}"/>
-<label for="customer">Customer to book for</label>
-<select name="customer">
-    {% for customer in customerlist %} 
-    <option value="{{customer[0]}}">{{customer[1]}} {{customer[2]}}</option>
-    {% endfor %}
-</select><br>
-<label for="site">Site to select</label><br>
-<!-- radio button loop -->
-{% for site in sitelist %}
-<input type="radio" name="site" value="{{site[0]}}"> {{site[0]}} - {{site[1]}} occupancy </input><br>
-{% endfor %}
-
-<br>
-<input type="submit"/>
-</form>
+<!-- code to display a list of books-->
+<div class="container">
+  <h2>Selwyn Campground - Make a booking</h2>
+  <p>
+    <form action="/booking/add" method="POST" >
+      <div class="mt-4 form-row">
+        <label for="bookingdate" readonly>Start Date to be booked:</label>
+        <div class="form-floating col-md-3 ">
+          <input type="text" readonly name="bookingdate" value="{{ bookingdate }}" class="form-control-plaintext" />
+          
+        </div>
+        <div class="col-md-3 mb-3">
+          <input type="hidden" name="bookingnights" value="{{ bookingnights }}"  />
+        </div>
+        <div class="col-md-3 mb-3">
+          <input type="hidden" name="occupancy" value="{{ occupancy }}" />
+        </div>
+        <div class="col-md-3 mb-3">
+          <label for="customer">Customer to book for:</label>
+          <select name="customer" class="mt-2 form-control">
+            {% for customer in customerlist %}
+            <option value="{{ customer[0] }}">{{ customer[1] }} {{ customer[2] }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="site">Site to select:</label>
+        <!-- radio button loop -->
+        {% for site in sitelist %}
+        <div class="mt-2 form-check">
+          <input type="radio" name="site" value="{{ site[0] }}" class="form-check-input">
+          <label class="form-check-label">{{ site[0] }} - {{ site[1] }} occupancy </label>
+        </div>
+        {% endfor %}
+      </div>
+      <button type="submit" class="mt-4 btn btn-primary">Submit</button>
+    </form>
+  </p>
+</div>
 
 {% endblock %}

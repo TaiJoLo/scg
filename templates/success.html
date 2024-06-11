@@ -1,45 +1,53 @@
 {% extends "base.html" %} {% block content %}
 
-<h1>{{ message }}</h1>
-<table class="table table-hover">
+<div class="container">
+  <h1 class="mt-4">{{ message }}</h1>
+  <hr />
   {% if phone %}
-  <thead class="table-primary">
-    <tr>
-      <th scope="col">First Name</th>
-      <th scope="col">Family Name</th>
-      <th scope="col">Email</th>
-      <th scope="col">Phone</th>
-    </tr>
-  </thead>
-  <tdoby class="table-group-divider">
-    <tr>
-      <td>{{fname}}</td>
-      <td>{{sname}}</td>
-      <td>{{email}}</td>
-      <td>{{phone}}</td>
-    </tr>
-  </tdoby>
+  <h3 class="mt-4">Customer Details</h3>
+  <table class="table table-hover">
+    <thead class="table-primary">
+      <tr>
+        <th scope="col">First Name</th>
+        <th scope="col">Family Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Phone</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ fname }}</td>
+        <td>{{ sname }}</td>
+        <td>{{ email }}</td>
+        <td>{{ phone }}</td>
+      </tr>
+    </tbody>
+  </table>
   {% elif site_id and booking_date %}
-  <thead class="table-primary">
-    <tr>
-      <th scope="col">First Name</th>
-      <th scope="col">Family Name</th>
-      <th scope="col">Site ID</th>
-      <th scope="col">Booking Date</th>
-      <th scope="col">Booking Nights</th>
-      <th scope="col">Occupancy</th>
-    </tr>
-  </thead>
-  <tdoby class="table-group-divider">
-    <tr>
-      <td>{{fname}}</td>
-      <td>{{sname}}</td>
-      <td>{{site_id}}</td>
-      <td>{{booking_date}}</td>
-      <td>{{booking_nights}}</td>
-      <td>{{occupancy}}</td>
-    </tr>
-  </tdoby>
+  <h3 class="mt-4">Booking Details</h3>
+  <table class="table table-hover">
+    <thead class="table-primary">
+      <tr>
+        <th scope="col">First Name</th>
+        <th scope="col">Family Name</th>
+        <th scope="col">Site ID</th>
+        <th scope="col">Booking Date</th>
+        <th scope="col">Booking Nights</th>
+        <th scope="col">Occupancy</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ fname }}</td>
+        <td>{{ sname }}</td>
+        <td>{{ site_id }}</td>
+        <td>{{ booking_date }}</td>
+        <td>{{ booking_nights }}</td>
+        <td>{{ occupancy }}</td>
+      </tr>
+    </tbody>
+  </table>
   {% endif %}
-</table>
+</div>
+
 {% endblock %}
