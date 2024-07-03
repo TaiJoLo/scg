@@ -1,7 +1,7 @@
-# Staff Portal Project
+# Selwyn Campground Staff Portal
 
 ## Overview
-Welcome to the Staff Portal Project! This portal is designed to help staff at a campground manage bookings, view camper information, and handle customer data efficiently.
+Welcome to the Selwyn Campground Staff Portal Project! This portal is designed to help staff at a campground manage bookings, view camper information, and handle customer data efficiently.
 
 ## Live Link
 Check out the live application [here](https://laurenlo1161429.pythonanywhere.com/).
